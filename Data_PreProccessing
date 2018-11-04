@@ -1,0 +1,147 @@
+package GraphX;
+
+import java.io.*;
+import java.util.ArrayList;
+
+public class HeroRelation {
+    public static void main(String[] args) throws IOException {
+        String[] sentence=getSentences("E:\\研究生一年级\\金庸\\优化\\倚天.txt");
+        String[] name=getHeroNames("E:\\研究生一年级\\金庸\\优化\\倚天名册.txt");
+        ArrayList<String> weaponList=getWeaponList("E:\\研究生一年级\\金庸\\优化\\倚天兵器.txt");
+        String[] kungFuList=getKungFu("E:\\研究生一年级\\金庸\\优化\\倚天武功秘籍.txt");
+//        HeroRelationship("E:\\研究生一年级\\金庸\\result3\\relationship.txt",sentence,name);
+//        HeroWeapon("E:\\研究生一年级\\金庸\\result3\\weapon.txt",sentence,name,weaponList);
+//        HeroKungFu("E:\\研究生一年级\\金庸\\result3\\kungfu.txt",sentence,name,kungFuList);
+    }
+
+    private static void HeroKungFu(String filename, String[] sentences, String[] name, String[] kungFuList) throws IOException {
+        BufferedWriter bw2=new BufferedWriter(new FileWriter(filename,true));
+        for (String sentence : sentences) {
+            for (String hero : name) {
+                if(sentence.contains(hero)){
+                    for(String kungfu:kungFuList){
+                        if(sentence.contains(kungfu)){
+                            bw2.write(hero+"----"+kungfu);
+                            bw2.newLine();
+                            bw2.flush();
+                        }
+                    }
+                }
+            }
+        }
+        bw2.close();
+    }
+
+    private static String[] getKungFu(String filename) throws IOException {
+        BufferedReader br4 = new BufferedReader(new FileReader
+                (filename));
+        StringBuffer str4 = new StringBuffer();
+        String line4;
+        while ((line4 = br4.readLine()) != null) {
+            str4.append(line4);
+        }
+        br4.close();
+//        System.out.println(str4);
+        String string4 = str4.toString();
+        String[] kungfu = string4.split("、");
+        System.out.println("射雕英雄传的武功秘籍数量为: " + kungfu.length);
+        return kungfu;
+    }
+
+    private static void HeroWeapon(String filename, String[] sentences, String[] name, ArrayList<String> weaponList) throws IOException {
+        BufferedWriter bw2=new BufferedWriter(new FileWriter(filename,true));
+        for (String sentence : sentences) {
+            for (String hero : name) {
+                if(sentence.contains(hero)){
+                    for(String weapon:weaponList){
+                        if(sentence.contains(weapon)){
+                            bw2.write(hero+"---"+weapon);
+                            bw2.newLine();
+                            bw2.flush();
+                        }
+                    }
+                }
+            }
+        }
+        bw2.close();
+    }
+    private static ArrayList<String> getWeaponList(String filename) throws IOException {
+        BufferedReader br3 = new BufferedReader(new FileReader
+                (filename));
+        ArrayList<String> weaponList=new ArrayList<>();
+        String line3;
+        while ((line3 = br3.readLine()) != null) {
+            weaponList.add(line3);
+        }
+        br3.close();
+//        System.out.println(weaponList);
+        System.out.println("射雕英雄传的兵器数量为: "+weaponList.size());
+        return weaponList;
+    }
+
+    private static void HeroRelationship(String filename, String[] sentences, String[] name) throws IOException {
+        BufferedWriter bw=new BufferedWriter(new FileWriter(filename,true));
+        for (String sentence : sentences) {
+            ArrayList<String> arrayList=new ArrayList<>();
+            for (String hero : name) {
+                if (sentence.contains(hero)) {
+                    arrayList.add(hero);
+                }
+            }
+            if(arrayList.size()>1){
+//                System.out.println("--------------"+arrayList+"-----------------");
+                showRelationShip(arrayList,bw);
+            }
+        }
+        bw.close();
+    }
+
+    private static String[] getHeroNames(String filename) throws IOException {
+        BufferedReader br2 = new BufferedReader(new FileReader
+                (filename));
+        StringBuffer str2 = new StringBuffer();
+        String line2;
+        while ((line2 = br2.readLine()) != null) {
+            str2.append(line2);
+        }
+        br2.close();
+        String string2 = str2.toString();
+        String[] name = string2.split("\\s+");
+        System.out.println("射雕英雄传的英雄数量为: " + name.length);
+        return name;
+//        System.out.println(str2);
+//        for(int i=0;i<name.length;i++){
+//            System.out.println(name[i]);
+//        }
+    }
+
+    private static String[] getSentences(String filename) throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader
+                (filename));
+        StringBuffer str = new StringBuffer("");
+        String line;
+        while ((line = br.readLine()) != null) {
+            str.append(line);
+        }
+        br.close();
+        String string = str.toString();
+        String[] sentences = string.split("。");
+        System.out.println("射雕英雄传的句子数量为：" + sentences.length);
+        return sentences;
+    }
+
+    private static void showRelationShip(ArrayList<String> arrayList, BufferedWriter bw) throws IOException {
+//        System.out.println(arrayList.size());
+//        for(String i:arrayList){
+//            System.out.println(i);
+//        }
+        for(int i=0;i<arrayList.size();i++){
+            for(int j=i+1;j<arrayList.size();j++){
+//                System.out.println(arrayList.get(i)+"==="+arrayList.get(j));
+                bw.write(arrayList.get(i)+"==="+arrayList.get(j));
+                bw.newLine();
+                bw.flush();
+            }
+        }
+    }
+}
